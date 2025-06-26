@@ -1,14 +1,14 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import LoginPage from "./LoginForm";
 
-export default async function Login() {
+export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
-  if (session) {
-    redirect("/dashboard");
+  if (!session) {
+    redirect("/auth/login");
   }
 
-  return <LoginPage />;
+
+  return <div>Welcome to your Dashboard, {session.user.email}</div>;
 }
