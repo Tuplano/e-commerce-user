@@ -5,17 +5,27 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: false, 
+      required: false,
     },
     password: {
       type: String,
-      required: false, 
-      default: "",  
+      required: false,
+      default: "",
     },
     email: {
       type: String,
       required: true,
       unique: true,
+    },
+    contact: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    address: {
+      type: String,
+      required: false,
+      default: "",
     },
     role: {
       type: String,

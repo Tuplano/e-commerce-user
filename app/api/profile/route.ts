@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import connectToDatabase from "@/lib/mongodb";
@@ -14,7 +13,8 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const { username, currentPassword, newPassword } = await req.json();
+  const { username, address, contact, currentPassword, newPassword } =
+    await req.json();
 
   const user = await User.findOne({ email: session.user.email });
   if (!user) {
@@ -25,12 +25,18 @@ export async function PUT(req: NextRequest) {
     if (user.password) {
       const isValid = await bcrypt.compare(currentPassword, user.password);
       if (!isValid) {
-        return NextResponse.json({ message: "Incorrect current password" }, { status: 400 });
+        return NextResponse.json(
+          { message: "Incorrect current password" },
+          { status: 400 }
+        );
       }
     }
 
     if (newPassword.length < 6) {
-      return NextResponse.json({ message: "Password too short" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Password too short" },
+        { status: 400 }
+      );
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
@@ -38,6 +44,14 @@ export async function PUT(req: NextRequest) {
 
   if (username && username !== user.username) {
     user.username = username;
+  }
+
+  if (address && address.trim() !== "") {
+    user.address = address;
+  }
+
+  if (contact && contact.trim() !== "") {
+    user.contact = contact;
   }
 
   await user.save();

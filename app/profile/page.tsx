@@ -18,6 +18,8 @@ export default async function ProfilePage() {
     <ProfileCard
       username={user.username || ""}
       email={user.email}
+      contact={user.contact}
+      address={user.address}
       role={user.role}
       hasPassword={hasPassword}
     />    
