@@ -9,6 +9,5 @@ export default async function DashboardPage() {
     redirect("/auth/login");
   }
 
-
   return <div>Welcome to your Dashboard, {session.user.email}</div>;
 }

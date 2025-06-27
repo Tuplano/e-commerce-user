@@ -3,8 +3,6 @@
 import { signIn } from "next-auth/react";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { Eye, EyeOff, Mail, Lock, Github, User } from "lucide-react";
 import { toast } from "sonner";
 

@@ -32,11 +32,10 @@ export const authOptions: NextAuthOptions = {
         );
         if (!isValid) throw new Error("Invalid password");
 
-        // Include username here as `name`
         return {
           id: user._id.toString(),
           email: user.email,
-          name: user.username, // This is what gets passed to `token` in jwt()
+          name: user.username,
         };
       },
     }),
@@ -64,7 +63,13 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.name = user.name; 
+
+        const dbUser = await User.findOne({ email: user.email });
+        if (dbUser) {
+          token.name = dbUser.username; 
+        } else {
+          token.name = user.name; 
+        }
       }
       return token;
     },
@@ -73,7 +78,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user && token) {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
-        session.user.name = token.name as string; 
+        session.user.name = token.name as string;
       }
       return session;
     },
