@@ -1,15 +1,49 @@
+"use client";
+
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState, ChangeEvent } from "react";
+import ProductCard from "@/components/ProductCard";
+
+export interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  stock: number;
+  description: string;
+  category: string;
+  image: string[];
+  createdAt: string;
+}
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  //fetching data
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("/api/product");
+        const data = await res.json();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
-        <div className="absolute inset-0 bg-white"></div>
 
         <div className=" h-full mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 h-full">
             {/* Column 1 - Model 1 */}
             <div className="h-full group overflow-hidden">
               <img
@@ -57,7 +91,11 @@ export default function Home() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12"></div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-50 mb-12">
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
 
           {/* View All Button */}
           <div className="text-center">
