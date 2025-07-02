@@ -4,20 +4,11 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState, ChangeEvent } from "react";
 import ProductCard from "@/components/ProductCard";
+import { ProductType } from "@/types/product";
 
-export interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  stock: number;
-  description: string;
-  category: string;
-  image: string[];
-  createdAt: string;
-}
 
 export default function Home() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
 
   //fetching data
@@ -38,7 +29,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
 
@@ -64,13 +55,13 @@ export default function Home() {
 
             {/* Column 3 - Text CTA */}
             <div className="h-full flex items-center justify-center bg-neutral-100 px-8 group transition-all duration-500 hover:bg-neutral-200">
-              <div className="text-left transform transition-transform duration-500 group-hover:scale-105">
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
+              <div className="text-left ">
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight transform transition-transform duration-500 group-hover:scale-105">
                   BEST <br />
                   SELLING <br />
                   PRODUCTS
                 </h1>
-                <button className="bg-white border border-gray-400 text-gray-800 px-6 py-2 rounded hover:bg-gray-100 transition duration-300">
+                <button className="bg-white border border-gray-400 text-gray-800 px-6 py-2 rounded hover:text-white hover:bg-black transition duration-300">
                   Shop Now
                 </button>
               </div>
@@ -80,7 +71,7 @@ export default function Home() {
       </section>
 
       {/* Products Section */}
-      <section className="py-20 bg-black">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           {/* Products Header */}
           <div className="text-center mb-16">
@@ -91,7 +82,7 @@ export default function Home() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-50 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-20 mb-12">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -99,7 +90,7 @@ export default function Home() {
 
           {/* View All Button */}
           <div className="text-center">
-            <button className="bg-transparent border border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-black transition-all duration-300">
+                <button className="bg-transparent border border-gray-400 text-white px-6 py-2 rounded hover:text-black hover:bg-white transition duration-300">
               View All
             </button>
           </div>
@@ -122,7 +113,7 @@ export default function Home() {
       </section>
 
       {/* Category Showcase */}
-      <section className="py-20 bg-black">
+      <section className="py-20 ">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* All Products */}

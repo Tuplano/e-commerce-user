@@ -32,7 +32,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between p-4 bg-black text-white">
+    <header className="flex items-center justify-between p-4  text-white">
       <Link href="/">Logo</Link>
       <div className="flex gap-4">
         <Link href="/">Home</Link>
