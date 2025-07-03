@@ -52,8 +52,8 @@ export default function Home() {
             </div>
 
             {/* Column 3 - Text CTA */}
-            <div className="h-full flex items-center justify-center bg-neutral-100 px-8 group transition-all duration-500 hover:bg-neutral-200">
-              <div className="text-left ">
+            <div className="h-full relative bg-neutral-100 px-8 group transition-all duration-500 hover:bg-neutral-200">
+              <div className="text-left absolute bottom-30 left-25 right-25">
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight transform transition-transform duration-500 group-hover:scale-105">
                   BEST <br />
                   SELLING <br />
@@ -191,15 +191,30 @@ export default function Home() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-100 to-blue-100 relative overflow-hidden">
+      <section className="py-15 bg-gradient-to-br from-gray-100 to-blue-100 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-200 rounded-full translate-x-1/2 translate-y-1/2 opacity-50"></div>
 
-        <div className="container mx-auto px-4 text-center relative z-10">
+        <div className="flex items-center w-full">
+          {/* Left Line */}
+          <div className="flex-grow border-t border-black" />
+
+          {/* Social Icons */}
+          <div className="flex space-x-6 px-4 text-black">
+            <Facebook className="w-10 h-10" />
+            <Instagram className="w-10 h-10" />
+            <Twitter className="w-10 h-10" />
+          </div>
+
+          {/* Right Line */}
+          <div className="flex-grow border-t border-black" />
+        </div>
+
+        <div className="container text-center relative mt-5">
           <h2 className="text-4xl font-bold text-gray-800 mb-8">Newsletter</h2>
 
           <div className="max-w-md mx-auto">
-            <div className="flex bg-white rounded-full shadow-lg overflow-hidden">
+            <div className="flex bg-white rounded shadow-lg overflow-hidden">
               <input
                 type="email"
                 placeholder="Example@email.com"
@@ -209,13 +224,6 @@ export default function Home() {
                 →
               </button>
             </div>
-          </div>
-
-          {/* Social Media Links */}
-          <div className="flex justify-center space-x-6 mt-12">
-            <Facebook className="w-5 h-5" />
-            <Instagram className="w-5 h-5" />
-            <Twitter className="w-5 h-5" />
           </div>
         </div>
       </section>
