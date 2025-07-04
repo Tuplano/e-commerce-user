@@ -154,21 +154,21 @@ export default function ProfileCard({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-300 via-white to-neutral-100 p-10 text-black">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-3xl font-bold  mb-2">
             Profile Settings
           </h1>
-          <p className="text-gray-600">
+          <p>
             Manage your personal information and account settings
           </p>
         </div>
 
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
           {/* Profile Header Section */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-white">
+          <div className="bg-gradient-to-r from-zinc-900 to-zinc-700 p-8 text-white">
             <div className="flex items-center gap-6">
               {/* Profile Avatar */}
               <div className="relative">

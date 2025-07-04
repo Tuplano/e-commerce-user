@@ -32,37 +32,35 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         <div className=" h-full mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 h-full">
-            {/* Column 1 - Model 1 */}
-            <div className="h-full group overflow-hidden">
-              <img
-                src="https://res.cloudinary.com/dhxctvrj5/image/upload/v1751269426/model1_xabxko.jpg"
-                alt="Model 1"
-                className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-
-            {/* Column 2 - Model 2 */}
-            <div className="h-full group overflow-hidden">
-              <img
-                src="https://res.cloudinary.com/dhxctvrj5/image/upload/v1751269260/behrooz-MMBBQ2p1Dsk-unsplash_1_tnoudo.jpg"
-                alt="Model 2"
-                className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-
-            {/* Column 3 - Text CTA */}
-            <div className="h-full relative bg-neutral-100 px-8 group transition-all duration-500 hover:bg-neutral-200">
-              <div className="text-left absolute bottom-30 left-25 right-25">
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight transform transition-transform duration-500 group-hover:scale-105">
+          <div className="grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 h-full">
+            <div className="h-full relative bg-neutral-100 px-6 py-10 group transition-all duration-500 hover:bg-neutral-200 order-1 lg:order-3">
+              <div className="absolute bottom-[20%] left-20 right-20 text-left">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-800 mb-4 leading-tight transform transition-transform duration-500 group-hover:scale-105">
                   BEST <br />
                   SELLING <br />
                   PRODUCTS
                 </h1>
-                <button className="bg-white border border-gray-400 text-gray-800 px-6 py-2 rounded hover:text-white hover:bg-black transition duration-300">
+                <button className="bg-white border border-gray-400 text-sm sm:text-base text-gray-800 px-4 py-2 rounded hover:text-white hover:bg-black transition duration-300">
                   Shop Now
                 </button>
               </div>
+            </div>
+            {/* Column 1 - Model 1 */}
+            <div className="h-full group overflow-hidden order-3 lg:order-1">
+              <img
+                src="https://res.cloudinary.com/dhxctvrj5/image/upload/v1751269426/model1_xabxko.jpg"
+                alt="Model 1"
+                className="w-full h-full object-[center_20%] object-cover transform transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+
+            {/* Column 2 - Model 2 */}
+            <div className="h-full group overflow-hidden order-2 lg:order-2">
+              <img
+                src="https://res.cloudinary.com/dhxctvrj5/image/upload/v1751269260/behrooz-MMBBQ2p1Dsk-unsplash_1_tnoudo.jpg"
+                alt="Model 2"
+                className="w-full h-full object-[center_20%] object-cover  transform transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
           </div>
         </div>
@@ -80,7 +78,7 @@ export default function Home() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-20 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 mb-12">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

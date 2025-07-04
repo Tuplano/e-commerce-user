@@ -1,12 +1,14 @@
 "use client";
 
-
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { User, ChevronDown, LogOut, Settings, UserCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const pathname = usePathname();
+
   const { data: session, status } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -34,11 +36,45 @@ export default function Header() {
   return (
     <header className="flex items-center justify-between p-4  text-white">
       <Link href="/">Logo</Link>
-      <div className="flex gap-4">
-        <Link href="/">Home</Link>
-        <Link href="/about">About</Link>
-        <Link href="/shop">Shop</Link>
-        <Link href="/size-chart">Size Chart</Link>
+      <div className="flex gap-10">
+        <Link
+          href="/"
+          className={`relative before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:translate-x-[-50%] before:h-[2px] before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full
+    ${pathname === "/" ? "before:w-full" : "before:w-0 hover:before:w-full"}
+  `}
+        >
+          Home
+        </Link>{" "}
+        <Link
+          href="/about"
+          className={`relative before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:translate-x-[-50%] before:h-[2px] before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full
+    ${
+      pathname === "/about" ? "before:w-full" : "before:w-0 hover:before:w-full"
+    }
+  `}
+        >
+          About
+        </Link>
+        <Link
+          href="/shop"
+          className={`relative before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:translate-x-[-50%] before:h-[2px] before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full
+    ${pathname === "/shop" ? "before:w-full" : "before:w-0 hover:before:w-full"}
+  `}
+        >
+          Shop
+        </Link>
+        <Link
+          href="/size-chart"
+          className={`relative before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:translate-x-[-50%] before:h-[2px] before:w-0 before:bg-white before:transition-all before:duration-300 hover:before:w-full
+    ${
+      pathname === "/size-chart"
+        ? "before:w-full"
+        : "before:w-0 hover:before:w-full"
+    }
+  `}
+        >
+          Size Chart
+        </Link>
       </div>
 
       <div className="relative" ref={dropdownRef}>
@@ -101,14 +137,7 @@ export default function Header() {
                   className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors"
                   onClick={() => setIsDropdownOpen(false)}
                 >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors"
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  Sign Up
+                  Sign In
                 </Link>
               </div>
             )}
