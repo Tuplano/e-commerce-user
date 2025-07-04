@@ -5,14 +5,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, Github, User } from "lucide-react";
 import { toast } from "sonner";
-
-interface userData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
+import { userData } from "@/types/user"; 
 
 
 export default function LoginPage() {
@@ -45,7 +38,7 @@ export default function LoginPage() {
         if (res?.ok) {
           toast.success("Login successful! Redirecting...");
           setTimeout(() => {
-            router.push("/dashboard");
+            router.push("/");
           }, 1500);
         } else {
           setIsLoading(false);

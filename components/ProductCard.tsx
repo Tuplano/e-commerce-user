@@ -1,9 +1,10 @@
 import React from "react";
 import { ProductType } from "@/types/product";
 
-export default function ProductCard({ product }: ProductType) {
+export default function ProductCard({ product }: { product: ProductType })
+ {
   return (
-    <div className="group relative bg-zinc-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-zinc-700/50 hover:border-zinc-600/50 transition-all duration-500 hover:shadow-2xl hover:shadow-zinc-900/50 cursor-pointer">
+    <div className="group relative bg-zinc-800/50 backdrop-blur-sm rounded overflow-hidden border border-zinc-700/50 hover:border-zinc-600/50 transition-all duration-500 hover:shadow-2xl hover:shadow-zinc-900/50 cursor-pointer">
       <div className="relative overflow-hidden bg-gradient-to-br from-zinc-700/30 to-zinc-800/30">
         <img
           src={
@@ -11,7 +12,7 @@ export default function ProductCard({ product }: ProductType) {
             "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop"
           }
           alt={product.name}
-          className="w-full h-100 object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
 
@@ -36,15 +37,15 @@ export default function ProductCard({ product }: ProductType) {
         </div>
       </div>
 
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors duration-300 leading-tight">
+      <div className="p-3">
+        <h3 className="text-base font-semibold text-white mb-2 group-hover:text-emerald-400">
           {product.name}
         </h3>
 
         {/* Price */}
         <div className="flex items-center justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-emerald-400">
+            <span className="text-base font-bold text-emerald-400">
               ${product.price}
             </span>
           </div>

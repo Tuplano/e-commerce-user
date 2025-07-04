@@ -6,7 +6,12 @@ import Product from "@/models/product";
 export async function GET(req: Request) {
   try {
     await connectToDatabase();
-    const products = await Product.find().limit(6);
+
+    const { searchParams } = new URL(req.url);
+    const limit = parseInt(searchParams.get("limit") || "4");
+    const skip = parseInt(searchParams.get("skip") || "0");
+
+const products = await Product.find().skip(skip).limit(limit);
     return NextResponse.json(products);
    }catch(error){
     console.error("[GET_PRODUCTS_ERROR]", error);

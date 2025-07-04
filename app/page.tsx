@@ -1,10 +1,11 @@
 "use client";
 
 import { Facebook, Instagram, Twitter } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState, ChangeEvent } from "react";
 import ProductCard from "@/components/ProductCard";
 import { ProductType } from "@/types/product";
+import Link from "next/link";
+
 
 export default function Home() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -14,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("/api/product");
+      const res = await fetch("/api/product?limit=4");
         const data = await res.json();
         setProducts(data);
       } catch (error) {
@@ -40,9 +41,11 @@ export default function Home() {
                   SELLING <br />
                   PRODUCTS
                 </h1>
-                <button className="bg-white border border-gray-400 text-sm sm:text-base text-gray-800 px-4 py-2 rounded hover:text-white hover:bg-black transition duration-300">
+                <Link 
+                href="/shop"
+                className="bg-white border border-gray-400 text-sm sm:text-base text-gray-800 px-4 py-2 rounded hover:text-white hover:bg-black transition duration-300">
                   Shop Now
-                </button>
+                </Link>
               </div>
             </div>
             {/* Column 1 - Model 1 */}
@@ -78,7 +81,7 @@ export default function Home() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 mb-12">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -189,7 +192,7 @@ export default function Home() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-15 bg-gradient-to-br from-gray-100 to-blue-100 relative overflow-hidden">
+      <section className="py-15 bg-gradient-to-br from-zinc-100 to-zinc-300 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-200 rounded-full translate-x-1/2 translate-y-1/2 opacity-50"></div>
 

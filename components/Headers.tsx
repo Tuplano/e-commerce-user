@@ -3,12 +3,20 @@
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { User, ChevronDown, LogOut, Settings, UserCircle } from "lucide-react";
+import CartSidebar from "./CartSideBar";
+import {
+  User,
+  ChevronDown,
+  LogOut,
+  Settings,
+  UserCircle,
+  ShoppingCart,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
   const pathname = usePathname();
-
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const { data: session, status } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -78,18 +86,26 @@ export default function Header() {
       </div>
 
       <div className="relative" ref={dropdownRef}>
-        <button
-          onClick={toggleDropdown}
-          className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded-md transition-colors"
-        >
-          <User className="w-5 h-5" />
-          <ChevronDown
-            className={`w-4 h-4 transition-transform ${
-              isDropdownOpen ? "rotate-180" : ""
-            }`}
-          />
-        </button>
+        <div className="flex items-center gap-2">
+            <div
+              onClick={() => setIsCartOpen(true)}
+              className="cursor-pointer hover:bg-gray-700 p-2 rounded-md transition-colors"
+            >
+              <ShoppingCart className="w-5 h-5" />
+            </div>
 
+          <button
+            onClick={toggleDropdown}
+            className="cursor-pointer flex items-center gap-2 hover:bg-gray-700 p-2 rounded-md transition-colors"
+          >
+            <User className="w-5 h-5" />
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${
+                isDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        </div>
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg border border-gray-200 z-50">
             {session?.user ? (
@@ -121,7 +137,7 @@ export default function Header() {
                   <button
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      signOut({ callbackUrl: "/auth/login" });
+                      signOut({ callbackUrl: "/" });
                     }}
                     className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 transition-colors w-full text-left"
                   >
@@ -144,6 +160,12 @@ export default function Header() {
           </div>
         )}
       </div>
+
+      <CartSidebar 
+      isOpen={isCartOpen} 
+      onClose={() => setIsCartOpen(false)} 
+      />
+
     </header>
   );
 }
