@@ -6,6 +6,8 @@ import type { Metadata } from "next";
 import Header from "@/components/Headers";
 import Footer from "@/components/Footers";
 import { Providers } from "./provider";
+import { CartProvider } from "@/context/CartonText";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,15 +28,17 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-<body
-  className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-900 text-white min-h-screen`}
->
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-900 text-white min-h-screen`}
+      >
         <Providers>
-          <Header />
-          {children}
-          <Toaster />
-          <Footer />
-        </Providers> 
+          <CartProvider>
+            <Header />
+            {children}
+            <Toaster />
+            <Footer />
+          </CartProvider>
+        </Providers>
       </body>
     </html>
   );
