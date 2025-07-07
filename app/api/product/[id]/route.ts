@@ -3,10 +3,10 @@ import connectToDatabase from "@/lib/mongodb";
 import Product from "@/models/product";
 
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } } // ✅ not a Promise
+  request: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
 
   try {
     await connectToDatabase();
