@@ -9,6 +9,7 @@ export default async function ProfilePage() {
   await connectToDatabase();
   const user = await User.findOne({ email: session.user.email }).lean();
   const hasPassword = !!user?.password && user.password.trim() !== "";
+
   if (!session) {
     return <div className="p-4 text-center">You must be logged in to view this page.</div>;
   }

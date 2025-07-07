@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 export default function CartSidebar({ isOpen, onClose }: CartSideBarProps) {
   const router = useRouter();
   const { data: session } = useSession();
-  const { cart, removeFromCart } = useCart(); // ✅ Destructure BEFORE using in handleCheckout
+  const { cart, removeFromCart } = useCart(); 
 
   useEffect(() => {
     console.log("Cart Items:", cart);
@@ -27,6 +27,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSideBarProps) {
         body: JSON.stringify({
           cart,
           email: session?.user?.email || "",
+          userId:session?.user?.id,
         }),
       });
 

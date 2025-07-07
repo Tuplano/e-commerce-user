@@ -1,4 +1,4 @@
-import cookie from "cookie";
+import * as cookie from 'cookie'; 
 
 export async function GET(): Promise<Response> {
   const logoutCookie = cookie.serialize("userToken", "", {
