@@ -6,15 +6,54 @@ import { CartSideBarProps } from "@/types/Cart";
 import { useSession } from "next-auth/react";
 import { useCart } from "@/context/CartonText";
 import { useEffect } from "react";
-
+import { useRouter } from "next/navigation";
 
 export default function CartSidebar({ isOpen, onClose }: CartSideBarProps) {
+  const router = useRouter();
   const { data: session } = useSession();
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart } = useCart(); // ✅ Destructure BEFORE using in handleCheckout
+
   useEffect(() => {
     console.log("Cart Items:", cart);
   }, [cart]);
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cart,
+          email: session?.user?.email || "",
+        }),
+      });
+
+      const text = await response.text();
+
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (parseError) {
+        console.error("Failed to parse JSON response:", parseError);
+        return;
+      }
+
+      if (response.ok && data?.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("Checkout failed:", data?.error || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+    }
+  };
+
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   return (
     <div
@@ -32,7 +71,6 @@ export default function CartSidebar({ isOpen, onClose }: CartSideBarProps) {
 
       {/* Cart Content */}
       <div className="flex flex-col justify-between h-[calc(100%-64px)] p-4 overflow-y-auto">
-        {/* Cart Items */}
         {cart.length === 0 ? (
           <div className="text-center mt-10">
             <p className="font-semibold mb-2">You have no items in your cart</p>
@@ -66,7 +104,12 @@ export default function CartSidebar({ isOpen, onClose }: CartSideBarProps) {
                   className="w-16 h-16 object-cover rounded"
                 />
                 <div className="flex-1 px-4">
-                  <p className="font-medium">{item.name}</p>
+                  <Link
+                    href={`/product/${item.productId}`}
+                    className="font-medium hover:underline"
+                  >
+                    {item.name}
+                  </Link>
                   <p className="text-sm text-gray-600">Size: {item.size}</p>
                   <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                   <p className="text-sm font-semibold">
@@ -84,19 +127,19 @@ export default function CartSidebar({ isOpen, onClose }: CartSideBarProps) {
           </div>
         )}
 
-        {/* Subtotal + Actions */}
+        {/* Subtotal + Checkout */}
         {cart.length > 0 && (
           <div className="border-t pt-4 mt-6">
             <div className="flex justify-between items-center mb-4">
               <p className="font-semibold">Subtotal:</p>
               <p className="text-lg font-bold">${subtotal.toFixed(2)}</p>
             </div>
-            <Link
-              href="/cart"
-              className="block text-center bg-black text-white py-3 rounded-md hover:bg-zinc-800 transition"
+            <button
+              onClick={handleCheckout}
+              className="block w-full text-center bg-black text-white py-3 rounded-md hover:bg-zinc-800 transition"
             >
-              Go to Cart
-            </Link>
+              Check Out
+            </button>
           </div>
         )}
       </div>

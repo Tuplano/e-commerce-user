@@ -108,6 +108,7 @@ export default function Home() {
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat.
           </p>
+          <hr></hr>
         </div>
       </section>
 

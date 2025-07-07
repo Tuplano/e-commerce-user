@@ -2,7 +2,6 @@ import React from "react";
 import { ProductType } from "@/types/product";
 import Link from "next/link";
 
-
 export default function ProductCard({ product }: { product: ProductType }) {
   return (
     <div className="group relative bg-zinc-800/50 backdrop-blur-sm rounded overflow-hidden border border-zinc-700/50 hover:border-zinc-600/50 transition-all duration-500 hover:shadow-2xl hover:shadow-zinc-900/50 cursor-pointer">
@@ -32,11 +31,9 @@ export default function ProductCard({ product }: { product: ProductType }) {
         </div>
 
         <div className="m-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-          <Link href={`/product/${product._id}`}>
-            <button className="flex-1 bg-white/10 backdrop-blur-md text-white py-2 px-4 rounded-lg hover:bg-white/20 transition-colors duration-300 font-medium">
-              Quick View
-            </button>
-          </Link>
+          <button className="flex-1 bg-white/10 backdrop-blur-md text-white py-2 px-4 rounded-lg hover:bg-white/20 transition-colors duration-300 font-medium">
+            <Link href={`/product/${product._id}`}>Quick View</Link>
+          </button>
         </div>
       </div>
 
