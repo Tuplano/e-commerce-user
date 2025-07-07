@@ -1,23 +1,30 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
 import Product from "@/models/product";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: { id: string } } // ✅ not a Promise
 ) {
+  const { id } = params;
+
   try {
     await connectToDatabase();
 
-    const product = await Product.findById(params.id);
-
+    const product = await Product.findById(id);
     if (!product) {
-      return NextResponse.json({ message: "Product not found" }, { status: 404 });
+      return new Response(JSON.stringify({ message: "Product not found" }), {
+        status: 404,
+      });
     }
 
-    return NextResponse.json(product, { status: 200 });
+    return new Response(JSON.stringify(product), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error("Error fetching product:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    return new Response(JSON.stringify({ message: "Server error" }), {
+      status: 500,
+    });
   }
 }
