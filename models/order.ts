@@ -1,8 +1,6 @@
-// models/Order.ts
 import mongoose, { Schema, model, models } from "mongoose";
 
 const OrderSchema = new Schema({
-  userId: { type: String, required: false },
   email: { type: String, required: true },
   products: [
     {
@@ -14,7 +12,8 @@ const OrderSchema = new Schema({
   ],
   total: Number,
   status: { type: String, default: "paid" },
-  sessionId: String,
+  sessionId: { type: String, required: true }, // <-- REQUIRED
+  userId: { type: String, default: null },     // <-- Optional
 }, { timestamps: true });
 
 export const Order = models.Order || model("Order", OrderSchema);

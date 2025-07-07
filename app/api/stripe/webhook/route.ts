@@ -41,7 +41,6 @@ export async function POST(req: NextRequest) {
       const total = lineItems.data.reduce((sum, item) => sum + item.amount_total!, 0) / 100;
 
       await Order.create({
-        userId: session.metadata?.userId || null,
         email: session.customer_email,
         products,
         total,
