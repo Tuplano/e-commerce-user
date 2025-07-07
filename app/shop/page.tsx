@@ -22,7 +22,7 @@ export default function Shop() {
       setLoading(true);
       try {
         const res = await fetch(`/api/product?limit=${limit}&skip=0`);
-        const data = await res.json();
+        const data: ProductType[] = await res.json();
 
         if (data.length < limit) setHasMore(false);
 
@@ -43,7 +43,7 @@ export default function Shop() {
     setLoading(true);
     try {
       const res = await fetch(`/api/product?limit=${limit}&skip=${skip}`);
-      const data = await res.json();
+      const data: ProductType[] = await res.json();
 
       if (data.length < limit) setHasMore(false);
 
@@ -55,7 +55,7 @@ export default function Shop() {
 
       setSkip((prev) => prev + limit);
     } catch (error) {
-      toast.error("Failed to fetch products", error);
+      toast.error("Failed to fetch products");
     } finally {
       setLoading(false);
     }

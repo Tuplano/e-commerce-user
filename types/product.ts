@@ -3,6 +3,7 @@ export interface ProductType {
   name: string;
   price: number;
   sizes: {
+    _id: string;
     size: string;
     stock: number;
   }[];

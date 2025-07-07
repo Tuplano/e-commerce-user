@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { cart, email, userId } = body;
+    const { cart, email } = body;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
     if (!cart || !Array.isArray(cart) || cart.length === 0) {

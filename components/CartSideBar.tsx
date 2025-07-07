@@ -27,7 +27,6 @@ export default function CartSidebar({ isOpen, onClose }: CartSideBarProps) {
         body: JSON.stringify({
           cart,
           email: session?.user?.email || "",
-          userId:session?.user?.id,
         }),
       });
 
