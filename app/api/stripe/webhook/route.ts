@@ -1,69 +1,33 @@
-// app/api/stripe/webhook/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
-import connectToDatabase from "@/lib/mongodb";
-import { Order } from "@/models/order";
+import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   const rawBody = await req.text();
-  const sig = req.headers.get("stripe-signature");
+  const sig = req.headers.get('stripe-signature'); // ✅ no red line
 
-  if (!sig) {
-    console.error("Missing Stripe signature header.");
-    return NextResponse.json({ error: "Missing Stripe signature" }, { status: 400 });
+  if (!sig || !endpointSecret) {
+    return new NextResponse('Missing Stripe signature or secret', { status: 400 });
   }
 
   let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
-  } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : "Unknown error";
-    console.error("Webhook signature verification failed:", errorMessage);
-    return NextResponse.json({ error: "Webhook Error" }, { status: 400 });
+  } catch (err: any) {
+    console.error('❌ Webhook signature verification failed:', err.message);
+    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  if (event.type === "checkout.session.completed") {
+  // Example: handle successful payment
+  if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
-
-    try {
-      await connectToDatabase();
-
-      // Get line items from session
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
-        limit: 100,
-      });
-
-      const products = lineItems.data.map((item) => ({
-        name: item.description ?? "No description",
-        quantity: item.quantity ?? 1,
-        price: item.amount_total
-          ? item.amount_total / (item.quantity ?? 1) / 100
-          : 0,
-        image: "", // Optional: if you want to store image, add it from metadata or product object
-      }));
-
-      const total =
-        lineItems.data.reduce((sum, item) => sum + (item.amount_total ?? 0), 0) / 100;
-
-      await Order.create({
-        email: session.customer_email,
-        products,
-        total,
-        sessionId: session.id,
-        status: "paid",
-      });
-
-      console.log("✅ Order saved for", session.customer_email);
-    } catch (err) {
-      console.error("❌ Error saving order:", err);
-      return NextResponse.json({ error: "Failed to save order" }, { status: 500 });
-    }
+    console.log('✅ Payment success:', session);
+    // Save to DB or trigger logic here
   }
 
-  return NextResponse.json({ received: true }, { status: 200 });
+  return new NextResponse('OK', { status: 200 });
 }
