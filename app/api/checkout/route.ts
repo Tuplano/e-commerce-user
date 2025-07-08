@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { cart, email } = body;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    console.log("🛒 Incoming Cart:", cart); 
 
     if (!cart || !Array.isArray(cart) || cart.length === 0) {
       return NextResponse.json(
@@ -41,7 +42,14 @@ export async function POST(req: NextRequest) {
       success_url: `${baseUrl}/`,
       cancel_url: `${baseUrl}/`,
       customer_email: email || undefined,
-
+      metadata: {
+        cart: JSON.stringify(      
+        cart.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.price,
+      }))),
+      },
       shipping_address_collection: {
         allowed_countries: ["US", "CA", "PH"],
       },

@@ -1,33 +1,54 @@
-import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { NextResponse } from "next/server";
+import Stripe from "stripe";
+import connectToDatabase from "@/lib/mongodb";
+import { Order } from "@/models/order";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(req: Request) {
   const rawBody = await req.text();
-  const sig = req.headers.get('stripe-signature'); // ✅ no red line
+  const sig = req.headers.get("stripe-signature");
 
   if (!sig || !endpointSecret) {
-    return new NextResponse('Missing Stripe signature or secret', { status: 400 });
+    return new NextResponse("Missing Stripe signature or secret", {
+      status: 400,
+    });
   }
 
   let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    console.log("🎯 Webhook verified:", event.type);
   } catch (err: any) {
-    console.error('❌ Webhook signature verification failed:', err.message);
+    console.error("❌ Webhook signature verification failed:", err.message);
     return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  // Example: handle successful payment
-  if (event.type === 'checkout.session.completed') {
+  if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    console.log('✅ Payment success:', session);
-    // Save to DB or trigger logic here
+
+    try {
+      await connectToDatabase();
+
+      const cart = JSON.parse(session.metadata?.cart || "[]");
+      console.log("📦 Received cart:", cart);
+
+      await Order.create({
+        sessionId: session.id,
+        paymentStatus: session.payment_status,
+        customerEmail: session.customer_details?.email,
+        amountTotal: session.amount_total,
+        currency: session.currency,
+        products: cart,
+      });
+
+      console.log("✅ Order saved:", session.id);
+    } catch (err: any) {
+      console.error("❌ Failed to save order:", err.message);
+    }
   }
 
-  return new NextResponse('OK', { status: 200 });
+  return new NextResponse("OK", { status: 200 });
 }
