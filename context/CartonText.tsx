@@ -1,4 +1,5 @@
 "use client";
+
 import { useSession } from "next-auth/react";
 import {
   createContext,
@@ -22,17 +23,52 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession();
   const [cart, setCart] = useState<CartItem[]>([]);
 
+  // Merge localStorage cart with DB on login
   useEffect(() => {
     const loadCart = async () => {
       if (status === "authenticated") {
         try {
           const res = await fetch("/api/cart");
-          const dbCart = await res.json();
-          setCart(dbCart);
+          const dbCart: CartItem[] = await res.json();
+
+          // Check localStorage for cart to merge
+          const stored = localStorage.getItem("cart");
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            const isFresh = Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000;
+            const localCart: CartItem[] = isFresh ? parsed.cart : [];
+
+            // Merge local cart with DB cart
+            const merged: CartItem[] = [...dbCart];
+            localCart.forEach((localItem) => {
+              const existingIndex = merged.findIndex(
+                (p) =>
+                  p.productId === localItem.productId &&
+                  p.size === localItem.size
+              );
+              if (existingIndex >= 0) {
+                merged[existingIndex].quantity += localItem.quantity;
+              } else {
+                merged.push(localItem);
+              }
+            });
+
+            // Save merged cart to DB
+            await fetch("/api/cart", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ cart: merged }),
+            });
+
+            localStorage.removeItem("cart");
+            setCart(merged);
+          } else {
+            setCart(dbCart);
+          }
         } catch (err) {
-          console.error("Failed to fetch cart from DB", err);
+          console.error("Failed to fetch or merge cart from DB", err);
         }
-      } else {
+      } else if (status === "unauthenticated") {
         const stored = localStorage.getItem("cart");
         if (stored) {
           const parsed = JSON.parse(stored);
@@ -46,6 +82,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     loadCart();
   }, [status]);
 
+  // Sync cart to DB or localStorage when cart changes
   useEffect(() => {
     if (cart.length === 0) return;
 
@@ -85,17 +122,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         (item) => !(item.productId === productId && item.size === size)
       );
 
-      if (status !== "authenticated") {
-        localStorage.setItem(
-          "cart",
-          JSON.stringify({ cart: updatedCart, timestamp: Date.now() })
-        );
-      } else {
+      if (status === "authenticated") {
         fetch("/api/cart", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ productId, size }),
         }).catch((err) => console.error("Failed to remove item from DB", err));
+      } else {
+        localStorage.setItem(
+          "cart",
+          JSON.stringify({ cart: updatedCart, timestamp: Date.now() })
+        );
       }
 
       return updatedCart;
@@ -105,6 +142,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const clearCart = () => {
     setCart([]);
     localStorage.removeItem("cart");
+
     if (status === "authenticated") {
       fetch("/api/cart", {
         method: "POST",
