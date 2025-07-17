@@ -9,7 +9,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { cart, email } = body;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    console.log("🛒 Incoming Cart:", cart); 
 
     if (!cart || !Array.isArray(cart) || cart.length === 0) {
       return NextResponse.json(
@@ -46,7 +45,10 @@ export async function POST(req: NextRequest) {
         cart: JSON.stringify(      
         cart.map((item) => ({
         productId: item.productId,
+        name: item.name,
         quantity: item.quantity,
+        size: item.size,
+        image: item.image,
         price: item.price,
       }))),
       },

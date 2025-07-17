@@ -60,8 +60,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
               body: JSON.stringify({ cart: merged }),
             });
 
-            localStorage.removeItem("cart");
-            setCart(merged);
+            if (res.ok) {
+              localStorage.removeItem("cart");
+              console.log("🧼 Local storage cart cleared after DB merge");
+              setCart(merged);
+            } else {
+              console.error("❌ Failed to save merged cart to DB");
+            }
           } else {
             setCart(dbCart);
           }
