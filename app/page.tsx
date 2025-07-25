@@ -1,11 +1,9 @@
 "use client";
 
-import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useEffect, useState, ChangeEvent } from "react";
 import ProductCard from "@/components/ProductCard";
 import { ProductType } from "@/types/product";
 import Link from "next/link";
-
 
 export default function Home() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -15,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-      const res = await fetch("/api/product?limit=4");
+        const res = await fetch("/api/product?limit=4");
         const data = await res.json();
         setProducts(data);
       } catch (error) {
@@ -41,9 +39,10 @@ export default function Home() {
                   SELLING <br />
                   PRODUCTS
                 </h1>
-                <Link 
-                href="/shop"
-                className="bg-white border border-gray-400 text-sm sm:text-base text-gray-800 px-4 py-2 rounded hover:text-white hover:bg-black transition duration-300">
+                <Link
+                  href="/shop"
+                  className="bg-white border border-gray-400 text-sm sm:text-base text-gray-800 px-4 py-2 rounded hover:text-white hover:bg-black transition duration-300"
+                >
                   Shop Now
                 </Link>
               </div>
@@ -75,7 +74,7 @@ export default function Home() {
           {/* Products Header */}
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
-              <div className="text-white text-2xl font-bold">KONTRAST</div>
+              <div className="text-white text-2xl font-bold">Logo</div>
             </div>
             <h2 className="text-white text-4xl font-bold mb-4">PRODUCTS</h2>
           </div>
@@ -89,9 +88,12 @@ export default function Home() {
 
           {/* View All Button */}
           <div className="text-center">
-            <button className="bg-transparent border border-gray-400 text-white px-6 py-2 rounded hover:text-black hover:bg-white transition duration-300">
+            <Link
+              href="/shop"
+              className="bg-transparent border border-gray-400 text-white px-6 py-2 rounded hover:text-black hover:bg-white transition duration-300"
+            >
               View All
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -186,44 +188,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-15 bg-gradient-to-br from-zinc-100 to-zinc-300 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-200 rounded-full translate-x-1/2 translate-y-1/2 opacity-50"></div>
-
-        <div className="flex items-center w-full">
-          {/* Left Line */}
-          <div className="flex-grow border-t border-black" />
-
-          {/* Social Icons */}
-          <div className="flex space-x-6 px-4 text-black">
-            <Facebook className="w-10 h-10" />
-            <Instagram className="w-10 h-10" />
-            <Twitter className="w-10 h-10" />
-          </div>
-
-          {/* Right Line */}
-          <div className="flex-grow border-t border-black" />
-        </div>
-
-        <div className="container text-center relative mt-5">
-          <h2 className="text-4xl font-bold text-gray-800 mb-8">Newsletter</h2>
-
-          <div className="max-w-md mx-auto">
-            <div className="flex bg-white rounded shadow-lg overflow-hidden">
-              <input
-                type="email"
-                placeholder="Example@email.com"
-                className="flex-1 px-6 py-4 text-gray-600 focus:outline-none"
-              />
-              <button className="bg-gray-800 text-white px-8 py-4 hover:bg-gray-700 transition-colors duration-300">
-                →
-              </button>
             </div>
           </div>
         </div>

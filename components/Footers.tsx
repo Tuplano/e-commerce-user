@@ -1,9 +1,47 @@
 import { Mail, MapIcon, MapPin, Phone, Pin } from "lucide-react";
+
+import { Facebook, Instagram, Twitter } from "lucide-react";
 import React from "react";
 
 export default function Footer() {
   return (
-    <footer className=" text-white">
+    <>
+          {/* Newsletter Section */}
+      <section className="py-20 bg-gradient-to-br from-zinc-100 to-zinc-300 relative overflow-hidden">
+  <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
+  <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-200 rounded-full translate-x-1/2 translate-y-1/2 opacity-50"></div>
+
+  <div className="container mx-auto text-center relative">
+    {/* Social Icons and Lines */}
+    <div className="flex items-center justify-center mb-8">
+      <div className="flex-grow border-t border-black mx-4" />
+      <div className="flex space-x-6 text-black">
+        <Facebook className="w-10 h-10" />
+        <Instagram className="w-10 h-10" />
+        <Twitter className="w-10 h-10" />
+      </div>
+      <div className="flex-grow border-t border-black mx-4" />
+    </div>
+
+    {/* Newsletter Content */}
+    <h2 className="text-4xl font-bold text-gray-800 mb-8">Newsletter</h2>
+
+    <div className="max-w-md mx-auto">
+      <div className="flex bg-white rounded shadow-lg overflow-hidden">
+        <input
+          type="email"
+          placeholder="Example@email.com"
+          className="flex-1 px-6 py-4 text-gray-600 focus:outline-none"
+        />
+        <button className="bg-gray-800 text-white px-8 py-4 hover:bg-gray-700 transition-colors duration-300">
+          →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <footer className=" text-white">
       <div className="grid grid-cols-1 lg:grid-cols-3 h-full p-10 gap-4">
         {/* Column 1: About / Logo */}
         <div className="h-full p-4">
@@ -64,5 +102,7 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
+    
   );
 }

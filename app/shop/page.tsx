@@ -62,7 +62,7 @@ export default function Shop() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-100 text-zinc-900 py-20">
+    <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-2">Products</h1>
         <div className="relative p-10">
@@ -78,7 +78,7 @@ export default function Shop() {
               <button
                 onClick={fetchProducts}
                 disabled={loading}
-                className="bg-zinc-900 text-white px-6 py-3 rounded hover:bg-zinc-800 disabled:opacity-50"
+                className="bg-transparent border border-gray-400 text-white px-6 py-2 rounded hover:text-black hover:bg-white transition duration-300"
               >
                 {loading ? "Loading..." : "Load More"}
               </button>
