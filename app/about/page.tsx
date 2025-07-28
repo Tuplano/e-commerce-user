@@ -52,11 +52,11 @@ export default function AboutPage() {
                 Ad litora torquent per conubia nostra inceptos himenaeos.{" "}
               </p>
             </div>
-            <div className="relative group">
+            <div className="relative group ">
               <img
                 src="https://res.cloudinary.com/dhxctvrj5/image/upload/v1751269260/behrooz-MMBBQ2p1Dsk-unsplash_1_tnoudo.jpg"
                 alt="Our Story"
-                className="w-full h-[600px] object-cover rounded-lg transform transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-[600px] object-cover rounded-lg"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
             </div>
@@ -248,7 +248,7 @@ export default function AboutPage() {
             bold self-expression. Discover your style with Brand.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-zinc-900 px-8 py-4 rounded hover:bg-gray-200 transition duration-300 font-semibold">
+            <button className="bg-white border border-gray-400 text-zinc-900 px-8 py-4 rounded hover:bg-zinc-900 hover:text-white  transition duration-300 font-semibold">
               Shop Collection
             </button>
             <button className="bg-transparent border border-gray-400 text-white px-8 py-4 rounded hover:text-zinc-900 hover:bg-white transition duration-300 font-semibold">
