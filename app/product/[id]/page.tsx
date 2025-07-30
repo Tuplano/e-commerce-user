@@ -102,7 +102,6 @@ export default function ProductDetails() {
             </>
           )}
 
-          {/* Dot Indicators */}
           <div className="flex justify-center mt-4 space-x-2">
             {product.image.map((_, index) => (
               <button

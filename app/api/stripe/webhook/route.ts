@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import connectToDatabase from "@/lib/mongodb";
 import { Order } from "@/models/order";
+import Cart from "@/models/cart";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -46,6 +47,21 @@ export async function POST(req: Request) {
       });
 
       console.log("✅ Order saved:", session.id);
+
+      const productIds = cart.map((item: any) => item.productId);
+      const customerEmail = session.customer_details?.email;
+
+      if (productIds.length > 0 && customerEmail) {
+        const cartDoc = await Cart.findOne({ email: customerEmail });
+
+        if (cartDoc) {
+          cartDoc.items = cartDoc.items.filter(
+            (item: any) => !productIds.includes(item.productId)
+          );
+          await cartDoc.save();
+          console.log(`🧹 Removed ${productIds.length} items from ${customerEmail}'s cart.`);
+        }
+      }
     } catch (err: any) {
       console.error("❌ Failed to save order:", err.message);
     }
