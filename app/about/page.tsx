@@ -2,7 +2,7 @@ import { Award, Users, Heart, ShoppingBag } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen text-White">
+    <div className="min-h-screen text-black">
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         <div className="absolute inset-0">
