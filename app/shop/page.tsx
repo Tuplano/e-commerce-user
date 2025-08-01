@@ -20,11 +20,24 @@ export default function Shop() {
     max: "",
   });
 
-  const limit = 2;
+  const limit = 4;
 
   useEffect(() => {
     resetAndFetch();
   }, []);
+
+  const buildQuery = (customSkip = 0) => {
+    const query = new URLSearchParams();
+
+    if (filters.category) query.append("category", filters.category);
+    if (filters.size) query.append("size", filters.size);
+    if (filters.min) query.append("min", filters.min);
+    if (filters.max) query.append("max", filters.max);
+    query.append("limit", limit.toString());
+    query.append("skip", customSkip.toString());
+
+    return query.toString();
+  };
 
   const resetAndFetch = async () => {
     setProducts([]);
@@ -32,7 +45,8 @@ export default function Shop() {
     setHasMore(true);
     setLoading(true);
     try {
-      const res = await fetch(`/api/product?limit=${limit}&skip=0`);
+      const query = buildQuery(0);
+      const res = await fetch(`/api/product?${query}`);
       const data: ProductType[] = await res.json();
 
       if (data.length < limit) setHasMore(false);
@@ -49,7 +63,8 @@ export default function Shop() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/product?limit=${limit}&skip=${skip}`);
+      const query = buildQuery(skip);
+      const res = await fetch(`/api/product?${query}`);
       const data: ProductType[] = await res.json();
 
       if (data.length < limit) setHasMore(false);
@@ -69,13 +84,13 @@ export default function Shop() {
   };
 
   const handleApplyFilters = () => {
-    toast.info("Filter functionality not implemented yet.");
+    resetAndFetch();
     setShowSidebar(false);
   };
 
   const handleClearFilters = () => {
     setFilters({ category: "", size: "", min: "", max: "" });
-    toast.info("Filters cleared (not applied to query).");
+    resetAndFetch();
     setShowSidebar(false);
   };
 
@@ -100,7 +115,7 @@ export default function Shop() {
               }
             >
               <option value="">All</option>
-              <option value="T-Shirts">T-Shirt</option>
+              <option value="T-Shirts">T-Shirts</option>
               <option value="Hoodie">Hoodie</option>
             </select>
           </div>
@@ -125,7 +140,7 @@ export default function Shop() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Price Range (₱)</label>
+            <label className="block text-sm font-medium">Price Range ($)</label>
             <div className="flex space-x-2 mt-1">
               <input
                 type="number"
